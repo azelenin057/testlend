@@ -86,7 +86,10 @@
                 <div class="order-form">
                     <h2>ОТРИМАЙТЕ ФЛЕКСОХІЛ БЕЗКОШТОВНО <br> ПО АКЦІЇ</h2>
                     <p class="order-subheading">ТІЛЬКИ ОДИН ДЕНЬ <br>
-                    <span id="current-date"></span> <br>БЕЗКОШТОВНО*</p>
+                    <span id="current-date" style="color: red;"></span> <br>БЕЗКОШТОВНО*</p>
+                    <script>
+                        document.getElementById('current-date').textContent = new Date().toLocaleDateString('uk-UA');
+                    </script>
                     <form id="main-order-form">
                         <select name="country" required>
                             <option value="ukraine">Україна</option>
@@ -394,7 +397,10 @@
                     <p>Рекомендуємо спробувати ФЛЕКСОХІЛ – препарат, який допоможе відновити ваші суглоби та повернути свободу руху!</p>
                     <div class="order-form">
                         <h2>ОТРИМАЙТЕ ФЛЕКСОХІЛ БЕЗКОШТОВНО ПО АКЦІЇ ПРЯМО ЗАРАЗ</h2>
-                        <p class="order-subheading">ТІЛЬКИ ОДИН ДЕНЬ <br> <span id="modal-current-date"></span> <br> БЕЗКОШТОВНО*</p>
+                        <p class="order-subheading">ТІЛЬКИ ОДИН ДЕНЬ <br> <span id="current-date" style="color: red;"></span> <br>БЕЗКОШТОВНО*</p>
+                        <script>
+                            document.getElementById('current-date').textContent = new Date().toLocaleDateString('uk-UA');
+                        </script> <br> БЕЗКОШТОВНО*</p>
                         <form id="modal-order-form">
                             <select name="country" required>
                                 <option value="ukraine">Україна</option>
