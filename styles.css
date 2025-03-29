@@ -493,7 +493,7 @@ footer {
     margin-top: 10px;
 }
 
-/* Адаптивность */
+/* Адаптивность с увеличенными шрифтами для мобильных устройств */
 @media (max-width: 768px) {
     header {
         padding: 10px;
@@ -505,7 +505,7 @@ footer {
     }
 
     .menu-icon, .search-icon {
-        font-size: 18px;
+        font-size: 20px; /* Увеличено с 18px */
     }
 
     main {
@@ -517,20 +517,24 @@ footer {
     }
 
     .main-article h1 {
-        font-size: 24px;
+        font-size: 28px; /* Увеличено с 24px */
+    }
+
+    .article-meta {
+        font-size: 16px; /* Увеличено с 14px */
     }
 
     .article-content p {
-        font-size: 14px;
+        font-size: 18px; /* Увеличено с 14px */
     }
 
     .cta-section h2 {
-        font-size: 20px;
+        font-size: 24px; /* Увеличено с 20px */
     }
 
     .cta-button {
-        padding: 10px 20px;
-        font-size: 14px;
+        padding: 12px 24px; /* Немного увеличены отступы */
+        font-size: 16px; /* Увеличено с 14px */
     }
 
     .order-container {
@@ -543,38 +547,38 @@ footer {
     }
 
     .order-form h2 {
-        font-size: 18px;
+        font-size: 22px; /* Увеличено с 18px */
     }
 
     .order-subheading {
-        font-size: 14px;
+        font-size: 18px; /* Увеличено с 14px */
     }
 
     .order-form select,
     .order-form input {
-        font-size: 12px;
+        font-size: 16px; /* Увеличено с 12px */
     }
 
     .order-form button {
-        padding: 8px;
-        font-size: 14px;
+        padding: 10px; /* Увеличено с 8px */
+        font-size: 18px; /* Увеличено с 14px */
     }
 
     .order-form .disclaimer {
-        font-size: 10px;
+        font-size: 12px; /* Увеличено с 10px */
     }
 
     .test-section h2 {
-        font-size: 18px;
+        font-size: 22px; /* Увеличено с 18px */
     }
 
     .test-section p {
-        font-size: 12px;
+        font-size: 16px; /* Увеличено с 12px */
     }
 
     .test-button {
-        padding: 8px 15px;
-        font-size: 12px;
+        padding: 10px 20px; /* Увеличено с 8px 15px */
+        font-size: 16px; /* Увеличено с 12px */
     }
 
     .modal-content {
@@ -583,24 +587,24 @@ footer {
     }
 
     .test-content h2 {
-        font-size: 18px;
+        font-size: 22px; /* Увеличено с 18px */
     }
 
     .question p {
-        font-size: 14px;
+        font-size: 18px; /* Увеличено с 14px */
     }
 
     .option {
-        font-size: 12px;
-        padding: 8px;
+        font-size: 16px; /* Увеличено с 12px */
+        padding: 10px; /* Увеличено с 8px */
     }
 
     .result p {
-        font-size: 12px;
+        font-size: 16px; /* Увеличено с 12px */
     }
 
     .reviews-section h2 {
-        font-size: 18px;
+        font-size: 22px; /* Увеличено с 18px */
     }
 
     .review-images img {
@@ -608,11 +612,11 @@ footer {
     }
 
     .review p {
-        font-size: 12px;
+        font-size: 16px; /* Увеличено с 12px */
     }
 
     .comments-section h2 {
-        font-size: 20px;
+        font-size: 24px; /* Увеличено с 20px */
     }
 
     .comment {
@@ -625,19 +629,19 @@ footer {
     }
 
     .comment-author {
-        font-size: 14px;
+        font-size: 16px; /* Увеличено с 14px */
     }
 
     .comment-date {
-        font-size: 11px;
+        font-size: 13px; /* Увеличено с 11px */
     }
 
     .comment-text {
-        font-size: 13px;
+        font-size: 16px; /* Увеличено с 13px */
     }
 
     .comment-actions {
-        font-size: 12px;
+        font-size: 14px; /* Увеличено с 12px */
         gap: 10px;
     }
 
@@ -651,7 +655,7 @@ footer {
     }
 
     .footer-links a, .footer-social a {
-        font-size: 12px;
+        font-size: 14px; /* Увеличено с 12px */
         margin: 0 5px;
     }
 }
