@@ -1,12 +1,14 @@
+import { validatePhoneBeforeSubmit } from './phoneValidation.js'; // Добавляем импорт
+import { trackLead } from './pixel.js'; // Добавляем импорт trackLead
+
 async function submitOrderToCRM(formData, formId, testAnswers, retries = 3) {
     console.log(`Отправка формы ${formId} в ${new Date().toISOString()}`);
-    // Проверяем номер телефона перед отправкой
     if (!validatePhoneBeforeSubmit(formData, formId)) {
-        return; // Прерываем отправку, если валидация не пройдена
+        return;
     }
 
     const apiUrl = 'https://ecohealth-crm.voiptime.app/api/v2/admin/order';
-    const adminToken = 'qTrnYsKRx7TL'; // Замените на ваш реальный токен авторизации
+    const adminToken = import.meta.env.VITE_ADMIN_TOKEN;
 
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
@@ -56,11 +58,9 @@ async function submitOrderToCRM(formData, formId, testAnswers, retries = 3) {
             }
 
             if (result.success) {
-                // Отправляем событие Lead в Facebook Pixel, если он инициализирован
                 if (window.isPixelInitialized) {
                     trackLead();
                 }
-                // Перенаправляем на страницу благодарности
                 window.location.href = 'thank-you.html';
                 return;
             } else {
@@ -83,7 +83,6 @@ async function submitOrderToCRM(formData, formId, testAnswers, retries = 3) {
 }
 
 function initFormSubmit(testAnswers) {
-    // Защита от повторной регистрации
     if (window.formSubmitInitialized) {
         console.log('initFormSubmit уже инициализирован, пропускаем повторную регистрацию');
         return;
@@ -114,8 +113,4 @@ function initFormSubmit(testAnswers) {
     });
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { submitOrderToCRM, initFormSubmit };
-} else {
-    initFormSubmit(window.testAnswers);
-}
+export { submitOrderToCRM, initFormSubmit };

@@ -15,7 +15,7 @@ function initTest() {
         testModal.style.display = 'flex';
         currentQuestion = 0;
         score = 0;
-        testAnswers.length = 0; // Очищаем массив
+        testAnswers.length = 0;
         questions.forEach((q, index) => {
             q.style.display = index === 0 ? 'block' : 'none';
         });
@@ -60,12 +60,7 @@ function initTest() {
         });
     });
 
-    // Возвращаем testAnswers для использования в других модулях
     return testAnswers;
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { initTest };
-} else {
-    window.testAnswers = initTest();
-}
+export { initTest };

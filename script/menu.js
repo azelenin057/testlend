@@ -7,8 +7,4 @@ function initMenu() {
     });
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { initMenu };
-} else {
-    initMenu();
-}
+export { initMenu };

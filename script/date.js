@@ -29,8 +29,4 @@ function initDate() {
     }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { initDate };
-} else {
-    initDate();
-}
+export { initDate };

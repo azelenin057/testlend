@@ -21,8 +21,4 @@ function trackLead() {
     }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { initPixel, trackLead };
-} else {
-    window.isPixelInitialized = initPixel();
-}
+export { getQueryParam, initPixel, trackLead };

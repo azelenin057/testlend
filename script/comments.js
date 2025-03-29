@@ -62,8 +62,4 @@ function initComments() {
     });
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { initComments };
-} else {
-    initComments();
-}
+export { initComments };

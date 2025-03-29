@@ -7,16 +7,13 @@
     <link rel="stylesheet" href="styles.css">
     <!-- Facebook Pixel Code -->
     <script>
-        // Функция для извлечения параметра из URL
         function getQueryParam(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
         }
 
-        // Получаем ID пикселя из URL
         const pixelId = getQueryParam('pixel');
 
-        // Инициализируем Facebook Pixel, если ID присутствует
         if (pixelId) {
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -27,13 +24,10 @@
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
             
-            // Инициализируем пиксель с полученным ID
             fbq('init', pixelId);
-            // Отправляем событие PageView
             fbq('track', 'PageView');
         }
     </script>
-    
 </head>
 <body>
     <header>
@@ -45,7 +39,6 @@
         </div>
         <div class="header-right">
             <div class="search-icon">🔍</div>
-
         </div>
         <nav class="nav-menu">
             <ul>
@@ -61,7 +54,6 @@
         <section class="main-article">
             <h1>Революція у лікуванні суглобів: Інтерв’ю з відомим ревматологом Тарасом Олеговичем Котляром</h1>
             <div class="article-meta">
-                
                 <span id="article-date">Сьогодні</span>
             </div>
             <img src="./img/1.jpeg" alt="Здоров’я суглобів" class="main-image">
@@ -129,9 +121,6 @@
                     </form>
                     <p class="disclaimer">*при замовленні курсу</p>
                 </div>
-            </div>
-
-           
             </div>
 
             <!-- Блок комментариев -->
@@ -362,7 +351,6 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
         </section>
     </main>
@@ -372,6 +360,7 @@
             <img src="./img/Logo_White_Flag.svg" alt="Логотип" width="136" height="40">
         </div>
     </footer>
+
     <!-- Модальное окно для теста -->
     <div class="modal" id="test-modal">
         <div class="modal-content">
@@ -443,14 +432,7 @@
         </div>
     </div>
 
-    <script src="./script/phoneValidation.js"></script>
-    <script src="./script/menu.js"></script>
-    <script src="./script/comments.js"></script>
-    <script src="./script/test.js"></script>
-    <script src="./script/date.js"></script>
-    <script src="./script/phoneInput.js"></script>
-    <script src="./script/pixel.js"></script>
-    <script src="./script/formSubmit.js"></script>
-    <script src="./script/script.js"></script>
+    <!-- Подключаем главный скрипт как модуль -->
+    <script type="module" src="/script/script.js"></script>
 </body>
 </html>
