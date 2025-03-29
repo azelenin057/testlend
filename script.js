@@ -9,50 +9,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Обработка лайков и дизлайков для комментариев
     const comments = document.querySelectorAll('.comment');
-
     comments.forEach(comment => {
         const commentId = comment.getAttribute('data-comment-id');
-        
-        // Лайки
         const likeButton = comment.querySelector('.action-like');
         const likeCountElement = comment.querySelector('.like-count');
         let likeCount = parseInt(likeCountElement.textContent);
-        
-        // Дизлайки
         const dislikeButton = comment.querySelector('.action-dislike');
         const dislikeCountElement = dislikeButton.querySelector('.dislike-count');
         let dislikeCount = parseInt(dislikeCountElement.textContent);
 
-        // Проверяем, лайкнул ли пользователь этот комментарий ранее
         let hasLiked = localStorage.getItem(`liked_${commentId}`) === 'true';
-        if (hasLiked) {
-            likeButton.classList.add('liked');
-        }
-
-        // Проверяем, дизлайкнул ли пользователь этот комментарий ранее
+        if (hasLiked) likeButton.classList.add('liked');
         let hasDisliked = localStorage.getItem(`disliked_${commentId}`) === 'true';
-        if (hasDisliked) {
-            dislikeButton.classList.add('disliked');
-        }
+        if (hasDisliked) dislikeButton.classList.add('disliked');
 
-        // Обработчик для лайков
         likeButton.addEventListener('click', () => {
             if (hasLiked) {
-                // Убираем лайк
                 likeCount -= 1;
                 likeCountElement.textContent = likeCount;
                 localStorage.setItem(`liked_${commentId}`, 'false');
                 likeButton.classList.remove('liked');
                 hasLiked = false;
             } else {
-                // Добавляем лайк
                 likeCount += 1;
                 likeCountElement.textContent = likeCount;
                 localStorage.setItem(`liked_${commentId}`, 'true');
                 likeButton.classList.add('liked');
                 hasLiked = true;
-
-                // Если пользователь лайкнул, убираем дизлайк
                 if (hasDisliked) {
                     dislikeCount -= 1;
                     dislikeCountElement.textContent = dislikeCount;
@@ -63,24 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Обработчик для дизлайков
         dislikeButton.addEventListener('click', () => {
             if (hasDisliked) {
-                // Убираем дизлайк
                 dislikeCount -= 1;
                 dislikeCountElement.textContent = dislikeCount;
                 localStorage.setItem(`disliked_${commentId}`, 'false');
                 dislikeButton.classList.remove('disliked');
                 hasDisliked = false;
             } else {
-                // Добавляем дизлайк
                 dislikeCount += 1;
                 dislikeCountElement.textContent = dislikeCount;
                 localStorage.setItem(`disliked_${commentId}`, 'true');
                 dislikeButton.classList.add('disliked');
                 hasDisliked = true;
-
-                // Если пользователь дизлайкнул, убираем лайк
                 if (hasLiked) {
                     likeCount -= 1;
                     likeCountElement.textContent = likeCount;
@@ -104,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentQuestion = 0;
     let score = 0;
 
-    // Открытие модального окна
     openTestModal.addEventListener('click', () => {
         testModal.style.display = 'flex';
         currentQuestion = 0;
@@ -115,19 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
         resultSection.style.display = 'none';
     });
 
-    // Закрытие модального окна
     closeTestModal.addEventListener('click', () => {
         testModal.style.display = 'none';
     });
 
-    // Закрытие модального окна при клике вне контента
     testModal.addEventListener('click', (e) => {
         if (e.target === testModal) {
             testModal.style.display = 'none';
         }
     });
 
-    // Обработка ответов
     const options = document.querySelectorAll('.option');
     options.forEach(option => {
         option.addEventListener('click', () => {
@@ -138,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentQuestion < questions.length) {
                 questions[currentQuestion].style.display = 'block';
             } else {
-                // Показываем результат
                 resultSection.style.display = 'block';
                 if (score >= 8) {
                     resultText.textContent = 'Ваші суглоби потребують негайної уваги! Ви відчуваєте значний дискомфорт, який може свідчити про серйозні проблеми.';
@@ -149,5 +122,72 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+    });
+
+    // Настройка текущей даты
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('uk-UA', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    });
+    document.getElementById('current-date').textContent = formattedDate;
+    document.getElementById('modal-current-date').textContent = formattedDate;
+
+    // Обработка отправки формы в CRM
+    const apiUrl = 'https://ecohealth-crm.voiptime.app/api/v2/admin/order'; // Используем endpoint для заказа
+    const adminToken = 'qTrnYsKRx7TL'; // Замените на ваш реальный токен авторизации
+
+    const submitOrderToCRM = async (formData) => {
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': adminToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    full_name: formData.get('full_name'),
+                    phone: formData.get('phone'),
+                    shop_id: 2, // Укажите ваш shop_id
+                    project_id: 4 // Укажите ваш project_id
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Дані успішно відправлено до CRM!');
+            } else {
+                console.error('Помилка відправки:', result.error);
+                alert(`Сталася помилка при відправці даних до CRM: ${result.error}`);
+            }
+        } catch (error) {
+            console.error('Помилка:', error.message);
+            if (error.message.includes('Failed to fetch')) {
+                alert('Не вдалося підключитися до сервера CRM. Перевірте URL або налаштування CORS.');
+            } else {
+                alert(`Сталася помилка при відправці даних: ${error.message}`);
+            }
+        }
+    };
+
+    // Обработка основной формы
+    const mainForm = document.getElementById('main-order-form');
+    mainForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(mainForm);
+        submitOrderToCRM(formData);
+    });
+
+    // Обработка формы в модальном окне
+    const modalForm = document.getElementById('modal-order-form');
+    modalForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(modalForm);
+        submitOrderToCRM(formData);
     });
 });

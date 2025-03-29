@@ -87,21 +87,13 @@
                     <h2>ОТРИМАЙТЕ ФЛЕКСОХІЛ БЕЗКОШТОВНО <br> ПО АКЦІЇ</h2>
                     <p class="order-subheading">ТІЛЬКИ ОДИН ДЕНЬ <br>
                     <span id="current-date"></span> <br>БЕЗКОШТОВНО*</p>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function() {
-                            const currentDate = new Date();
-                            const formattedDate = currentDate.toLocaleDateString('uk-UA', {
-                                day: '2-digit',
-                                month: 'long',
-                                year: 'numeric'
-                            });
-                            document.getElementById("current-date").textContent = formattedDate;
-                        });
-                    </script>
-                    <form>
-                        <input type="text" placeholder="Ваше ім’я" required>
-                        <input type="tel" placeholder="Номер телефону" required>
-                        <button type="submit">ОТРИМАТИ</button>
+                    <form id="main-order-form">
+                        <select name="country" required>
+                            <option value="ukraine">Україна</option>
+                        </select>
+                        <input type="text" name="full_name" placeholder="Ваше ім’я" required>
+                        <input type="tel" name="phone" placeholder="Номер телефону" required>
+                        <button type="submit" id="main-submit-btn">ОТРИМАТИ</button>
                     </form>
                     <p class="disclaimer">*при замовленні курсу</p>
                 </div>
@@ -396,26 +388,20 @@
                 </div>
                 <div class="result" id="test-result" style="display: none;">
                     <h2>Результати тесту</h2>
+                    div class="result" id="test-result" style="display: none;">
+                    <h2>Результати тесту</h2>
                     <p id="result-text"></p>
                     <p>Рекомендуємо спробувати ФЛЕКСОХІЛ – препарат, який допоможе відновити ваші суглоби та повернути свободу руху!</p>
                     <div class="order-form">
                         <h2>ОТРИМАЙТЕ ФЛЕКСОХІЛ БЕЗКОШТОВНО ПО АКЦІЇ ПРЯМО ЗАРАЗ</h2>
                         <p class="order-subheading">ТІЛЬКИ ОДИН ДЕНЬ <br> <span id="modal-current-date"></span> <br> БЕЗКОШТОВНО*</p>
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function() {
-                                const currentDate = new Date();
-                                const formattedDate = currentDate.toLocaleDateString('uk-UA', {
-                                    day: '2-digit',
-                                    month: 'long',
-                                    year: 'numeric'
-                                });
-                                document.getElementById("modal-current-date").textContent = formattedDate;
-                            });
-                        </script>
-                        <form>
-                            <input type="text" placeholder="Ваше ім’я" required>
-                            <input type="tel" placeholder="Номер телефону" required>
-                            <button type="submit">ОТРИМАТИ</button>
+                        <form id="modal-order-form">
+                            <select name="country" required>
+                                <option value="ukraine">Україна</option>
+                            </select>
+                            <input type="text" name="full_name" placeholder="Ваше ім’я" required>
+                            <input type="tel" name="phone" placeholder="Номер телефону" required>
+                            <button type="submit" id="modal-submit-btn">ОТРИМАТИ</button>
                         </form>
                         <p class="disclaimer">*при замовленні курсу</p>
                     </div>
