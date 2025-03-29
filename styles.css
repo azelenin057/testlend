@@ -475,23 +475,9 @@ footer {
     text-align: center;
 }
 
-.footer-logo {
-    margin-bottom: 10px;
-}
 
-.footer-links a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
-}
 
-.footer-social a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
-    display: inline-block;
-    margin-top: 10px;
-}
+
 
 /* Адаптивность с увеличенными шрифтами для мобильных устройств */
 @media (max-width: 768px) {
