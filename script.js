@@ -81,13 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentQuestion = 0;
     let score = 0;
-    let testAnswers = []; // Массив для хранения вопросов и ответов
+    let testAnswers = [];
 
     openTestModal.addEventListener('click', () => {
         testModal.style.display = 'flex';
         currentQuestion = 0;
         score = 0;
-        testAnswers = []; // Очищаем ответы при открытии теста
+        testAnswers = [];
         questions.forEach((q, index) => {
             q.style.display = index === 0 ? 'block' : 'none';
         });
@@ -107,12 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const options = document.querySelectorAll('.option');
     options.forEach(option => {
         option.addEventListener('click', () => {
-            // Сохраняем вопрос и ответ
             const questionText = questions[currentQuestion].querySelector('p').textContent;
             const answerText = option.textContent;
             testAnswers.push({ question: questionText, answer: answerText });
+            console.log('Сохранённый ответ:', { question: questionText, answer: answerText });
+            console.log('Текущие ответы:', testAnswers);
 
-            // Обрабатываем логику теста
             score += parseInt(option.getAttribute('data-score'));
             questions[currentQuestion].style.display = 'none';
             currentQuestion++;
@@ -139,67 +139,109 @@ document.addEventListener('DOMContentLoaded', () => {
         month: 'long',
         year: 'numeric'
     });
-    document.getElementById('current-date').textContent = formattedDate;
-    document.getElementById('modal-current-date').textContent = formattedDate;
+
+    const currentDateElement = document.getElementById('current-date');
+    const modalCurrentDateElement = document.getElementById('modal-current-date');
+
+    if (currentDateElement) {
+        currentDateElement.textContent = formattedDate;
+    } else {
+        console.warn("Элемент с ID 'current-date' не найден на странице.");
+    }
+
+    if (modalCurrentDateElement) {
+        modalCurrentDateElement.textContent = formattedDate;
+    } else {
+        console.warn("Элемент с ID 'modal-current-date' не найден на странице.");
+    }
+
+    // Функция для извлечения параметра из URL (дублируем для использования в script.js)
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Проверяем, инициализирован ли Facebook Pixel
+    const pixelId = getQueryParam('pixel');
+    const isPixelInitialized = pixelId && typeof fbq !== 'undefined';
 
     // Обработка отправки формы в CRM
     const apiUrl = 'https://ecohealth-crm.voiptime.app/api/v2/admin/order';
-    const adminToken = 'qTrnYsKRx7TL'; // Замените на ваш реальный токен авторизации
+    const adminToken = 'Your admin token'; // Замените на ваш реальный токен авторизации
 
-    const submitOrderToCRM = async (formData) => {
-        try {
-            // Форматируем номер телефона (добавляем код страны, если его нет)
-            let phone = formData.get('phone');
-            if (!phone.startsWith('+')) {
-                phone = '+380' + phone; // Предполагаем, что это украинский номер
-            }
+    const submitOrderToCRM = async (formData, formId, retries = 3) => {
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                let phone = formData.get('phone');
+                if (!phone.startsWith('+')) {
+                    phone = '+380' + phone;
+                }
 
-            // Форматируем ответы теста в строку "Вопрос - ответ"
-            let comment = '';
-            if (testAnswers.length > 0) {
-                comment = testAnswers.map(answer => `${answer.question} - ${answer.answer}`).join('\n');
-            }
+                let comment = '';
+                if (formId === 'modal-order-form' && testAnswers.length > 0) {
+                    comment = testAnswers.map(answer => `${answer.question} - ${answer.answer}`).join('\n');
+                }
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Authorization': adminToken,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
+                console.log('Отправляемые данные:', {
                     full_name: formData.get('full_name'),
                     phone: phone,
-                    shop_id: 4, // Замените на ваш shop_id
-                    project_id: 2, // Замените на ваш project_id
-                    price: 0, // Указываем цену (например, 0, если это бесплатный заказ)
-                    status_id: 1, // Указываем статус (например, 1 для нового заказа)
-                    cart: [ // Добавляем минимальный объект корзины
-                        {
-                            good_id: 26, // Замените на реальный good_id
-                            quantity: 1
-                        }
-                    ],
-                    comment: comment // Добавляем ответы теста в поле comment
-                })
-            });
+                    shop_id: 1,
+                    project_id: 1,
+                    price: 0,
+                    status_id: 1,
+                    cart: [{ good_id: 1, quantity: 1 }],
+                    comment: comment
+                });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': adminToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        full_name: formData.get('full_name'),
+                        phone: phone,
+                        shop_id: 1,
+                        project_id: 1,
+                        price: 0,
+                        status_id: 1,
+                        cart: [{ good_id: 1, quantity: 1 }],
+                        comment: comment
+                    })
+                });
 
-            const result = await response.json();
-            if (result.success) {
-                alert('Дані успішно відправлено до CRM!');
-            } else {
-                console.error('Помилка відправки:', result.error);
-                alert(`Сталася помилка при відправці даних до CRM: ${result.error}`);
-            }
-        } catch (error) {
-            console.error('Помилка:', error.message);
-            if (error.message.includes('Failed to fetch')) {
-                alert('Не вдалося підключитися до сервера CRM. Перевірте URL або налаштування CORS.');
-            } else {
-                alert(`Сталася помилка при відправці даних: ${error.message}`);
+                const result = await response.json();
+
+                if (!response.ok) {
+                    console.error('Ответ сервера при ошибке:', result);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                if (result.success) {
+                    // Отправляем событие Lead в Facebook Pixel, если он инициализирован
+                    if (isPixelInitialized) {
+                        fbq('track', 'Lead');
+                        console.log('Событие Lead отправлено в Facebook Pixel');
+                    }
+                    // Перенаправляем на страницу благодарности
+                    window.location.href = 'thank-you.html';
+                    return;
+                } else {
+                    throw new Error(result.error || 'Неизвестная ошибка от сервера');
+                }
+            } catch (error) {
+                if (attempt === retries) {
+                    console.error('Помилка після всех спроб:', error.message);
+                    if (error.message.includes('Failed to fetch')) {
+                        alert('Не вдалося підключитися до сервера CRM. Перевірте URL або налаштування CORS.');
+                    } else {
+                        alert(`Сталася помилка при відправці даних: ${error.message}`);
+                    }
+                } else {
+                    console.warn(`Спроба ${attempt} не вдалася. Повтор через 2 секунди...`);
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
             }
         }
     };
@@ -209,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mainForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(mainForm);
-        submitOrderToCRM(formData);
+        submitOrderToCRM(formData, 'main-order-form');
     });
 
     // Обработка формы в модальном окне
@@ -217,6 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
     modalForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(modalForm);
-        submitOrderToCRM(formData);
+        submitOrderToCRM(formData, 'modal-order-form');
     });
 });
