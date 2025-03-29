@@ -1,12 +1,25 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root: './', // Корневая директория проекта
+  root: './',
   build: {
-    outDir: 'dist', // Папка для сборки
-    emptyOutDir: true, // Очищать папку перед сборкой
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: './index.html',
+        thankYou: './thank-you.html',
+      },
+    },
   },
   server: {
-    open: true, // Автоматически открывать браузер при запуске
+    open: true,
+    proxy: {
+      '/api': {
+        target: 'https://ecohealth-crm.voiptime.app',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
 });
