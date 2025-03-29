@@ -149,8 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     full_name: formData.get('full_name'),
                     phone: formData.get('phone'),
-                    shop_id: 2, // Укажите ваш shop_id
-                    project_id: 4 // Укажите ваш project_id
+                    shop_id: 4, // Укажите ваш shop_id
+                    project_id: 2 // Укажите ваш project_id
                 })
             });
 
