@@ -66,11 +66,49 @@
 
 
 
-  shop_id: 4, // Замените на ваш shop_id
-                    project_id: 2, // Замените на ваш project_id
-                    price: 0, // Указываем цену (например, 0, если это бесплатный заказ)
-                    status_id: 1, // Указываем статус (например, 1 для нового заказа)
-                    cart: [ // Добавляем минимальный объект корзины
-                       good_id: 26, // Замените на реальный good_id
-                            quantity: 1
-                        }
+
+    // Обработка отправки формы в CRM
+    const apiUrl = 'https://ecohealth-crm.voiptime.app/api/v2/admin/order';
+    const adminToken = 'qTrnYsKRx7TL'; // Замените на ваш реальный токен авторизации
+
+    const submitOrderToCRM = async (formData, formId, retries = 3) => {
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                let phone = formData.get('phone');
+                if (!phone.startsWith('+')) {
+                    phone = '+380' + phone;
+                }
+
+                let comment = '';
+                if (formId === 'modal-order-form' && testAnswers.length > 0) {
+                    comment = testAnswers.map(answer => `${answer.question} - ${answer.answer}`).join('\n');
+                }
+
+                console.log('Отправляемые данные:', {
+                    full_name: formData.get('full_name'),
+                    phone: phone,
+                    shop_id: 1,
+                    project_id: 1,
+                    price: 0,
+                    status_id: 1,
+                    cart: [{ good_id: 1, quantity: 1 }],
+                    comment: comment
+                });
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': adminToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        full_name: formData.get('full_name'),
+                        phone: phone,
+                        shop_id: 4,
+                        project_id: 2,
+                        price: 0,
+                        status_id: 1,
+                        cart: [{ good_id: 26, quantity: 1 }],
+                        comment: comment
+                    })
+                });
